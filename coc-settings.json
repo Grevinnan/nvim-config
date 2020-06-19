@@ -1,0 +1,63 @@
+{
+    "diagnostic.virtualText": true,
+    "codeLens.enable": false,
+
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "args": ["--log-file=/tmp/ccls.log"],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "filetypes": ["c", "cpp", "objc", "objcpp"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                }
+            }
+        },
+        "dart": {
+            "command": "dart_language_server",
+            "args": [],
+            "filetypes": ["dart"],
+            "initializationOptions": {},
+            "settings": {
+                "dart": {
+                    "validation": {},
+                    "completion": {}
+                }
+            }
+        },
+        "bash": {
+            "command": "bash-language-server",
+            "args": ["start"],
+            "filetypes": ["sh"],
+            "ignoredRootPaths": ["~"]
+        }
+    },
+    "list.insertMappings": {
+        "<C-n>": "feedkeys:\\<Down>",
+        "<C-p>": "feedkeys:\\<Up>"
+    },
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=cv2",
+        "--disable=C0103",
+        "--disable=C0111",
+        "--disable=C0411",
+        "--disable=C0413",
+        "--disable=R0903",
+        "--disable=C1801"
+    ],
+    "explorer.icon.enableNerdfont": true,
+    "highlight.colors.enable": true,
+    "python.linting.pylintUseMinimalCheckers": true,
+    "list.source.files.command": "git",
+    "list.source.files.args": ["ls-files", "--recurse-submodules"],
+    "coc.source.emoji.filetypes": ["txt", "md"],
+    "smartf.wordJump": false,
+    "smartf.timeout": 3000
+}

@@ -1,77 +1,6 @@
-filetype off
-
-call plug#begin(stdpath('data') . '/plugged')
-
-" Better motion
-Plug 'justinmk/vim-sneak'
-
-" Pimped status line
-Plug 'itchyny/lightline.vim'
-
-" Color scheme and highlighter
-Plug 'chrisbra/Colorizer'
-Plug 'tsiemens/vim-aftercolors'
-
-" Highlight yanked text
-Plug 'justinmk/vim-highlightedyank'
-
-" git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-
-" Utility
-Plug 'tpope/vim-surround'
-Plug 'bkad/CamelCaseMotion'
-Plug 'tpope/vim-unimpaired'
-
-" Fuzzy search
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Comment lines
-Plug 'tpope/vim-commentary'
-
-" Snippets
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
-
-" C/CPP
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-" Syntax
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'udalov/kotlin-vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'gburca/vim-logcat'
-Plug 'pboettch/vim-cmake-syntax'
-
-" Neovim bultin lsp
-Plug 'neovim/nvim-lsp'
-Plug 'haorenW1025/completion-nvim'
-Plug 'haorenW1025/diagnostic-nvim'
-
-" Format multiple file types
-Plug 'sbdchd/neoformat'
-
-" Theme
-Plug 'morhetz/gruvbox'
-
-call plug#end()
-
-if (has("termguicolors"))
- set termguicolors
-endif
-
-set termguicolors
-let g:gruvbox_contrast_dark = 'hard'
-colorscheme gruvbox
-hi Search cterm=NONE ctermfg=red ctermbg=blue
-
 set background=dark
 syntax on
 set backspace=2
-
-let mapleader = ','
 
 set expandtab
 set tabstop=2
@@ -90,257 +19,348 @@ set smarttab
 set smartcase
 set incsearch
 set scrolloff=1
-set laststatus=2
-set textwidth=100
 
 set nocompatible               " be iMproved
+filetype off                   " required!
 
-" Undo
-set undodir=~/.config/nvim/undodir
-set undofile
-set undolevels=1000
-set undoreload=10000
+set rtp+=~/.vim/bundle/vundle/
+call vundle#begin()
 
-" Swaps
-set backupdir=~/.config/nvim/swaps,$TMP
-set directory=~/.config/nvim/swaps,$TMP
+" let Vundle manage Vundle
+" required! 
+Plugin 'gmarik/vundle'
 
-" Default statusline
-set statusline=%<%F\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+Plugin 'Quramy/tsuquyomi'
+" Plugin 'Shougo/vimproc.vim'
+Plugin 'digitaltoad/vim-pug'
+" Plugin 'leafgarland/typescript-vim'
+Plugin 'maksimr/vim-jsbeautify'
+" Plugin 'othree/html5.vim'
+" Plugin 'pboettch/vim-cmake-syntax'
+Plugin 'rhysd/vim-clang-format'
+" Plugin 'scrooloose/syntastic'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'wikitopian/hardmode'
+" Markdown
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+" Plugin 'christoomey/vim-system-copy'
+Plugin 'udalov/kotlin-vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'tell-k/vim-autopep8'
 
+" TEST
+Plugin 'airblade/vim-gitgutter'
+" Plugin 'hsanson/vim-android'
+" Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'bkad/CamelCaseMotion'
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/fzf'
+
+Plugin 'justinmk/vim-highlightedyank'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+
+" Plugin 'terryma/vim-multiple-cursors'
+Plugin 'HerringtonDarkholme/yats.vim'
+
+Plugin 'neoclide/coc.nvim'
+Plugin 'morhetz/gruvbox'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+"filetype plugin indent on    " required 
+" To ignore plugin indent changes, instead use:
+filetype plugin on
+
+set termguicolors
+let g:gruvbox_contrast_dark = 'hard'
+"
+colorscheme gruvbox
+hi Search cterm=NONE ctermfg=red ctermbg=blue
+
+let mapleader = ","
+
+"" Coc
 set hidden
 " Better display for messages
 set cmdheight=2
 " Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=100
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
+" set updatetime=300
+" don't give |ins-completion-menu| messages.
 set shortmess+=c
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>gs :CocList symbols<CR>
+
+map <a-o> :CocCommand explorer <CR>
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+autocmd FileType python noremap <buffer> <Leader>ex :CocCommand python.execInTerminal<cr>
+
+autocmd FileType python vnoremap <buffer> <Leader>ex :CocCommand python.execSelectionInTerminal<cr>
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+noremap <Leader>ff :Prettier<cr>
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" press <esc> to cancel.
+nmap f <Plug>(coc-smartf-forward)
+nmap F <Plug>(coc-smartf-backward)
+nmap ; <Plug>(coc-smartf-repeat)
+nmap , <Plug>(coc-smartf-repeat-opposite)
+
+nnoremap <expr><C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
+nnoremap <expr><C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
+
+augroup Smartf
+  autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#FFFFFF
+  autocmd User SmartfEnter :hi Conceal ctermfg=220 guibg=#F92672
+  "autocmd User SmartfEnter :hi Conceal ErrorMsg
+  "autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+augroup end
+" augroup Smartf
+"   autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
+"   autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+" augroup end
+
+map  <F4> :%s/\s\+$//e<CR>
+nmap <F5> :buffers<CR>:buffer<Space>
+
+map <F7> :!ctags -R --language-force=java --extra=+f --exclude=*.class --sort=yes .<CR>
+map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q+f --sort=yes .<CR>
+map <F12> <C-]>
+
+map <S-Tab> :tjump 
+
+nmap <C-h> [m
+nmap <C-j> ]m
+
+map <a-ö> ^
+map <a-ä> $
+
+" provide hjkl movements in Insert mode via the <Alt> modifier key
+inoremap <A-h> <C-o>h
+inoremap <A-j> <C-o>j
+inoremap <A-k> <C-o>k
+inoremap <A-l> <C-o>l
 
 nmap <C-K> :Buffers<CR>
 nmap <C-A> :GFiles<CR>
 nmap <C-P> :Files<CR>
 
-" Tab completion. Taken from nvim-completion README.
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1] =~ '\s'
-endfunction
+" Undo
+set undodir=~/.vim/undodir
+set undofile
+set undolevels=1000
+set undoreload=10000
 
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ completion#trigger_completion()
+" set backspace=2
+" set scrolloff=4
+set backupdir=~/.swapfiles,$TMP
+set directory=~/.swapfiles,$TMP
 
-inoremap <silent><expr> <c-space> completion#trigger_completion()
+" Makes dot keep the cursor where you triggered it
+nmap . .`[
 
 " Enable mousewheel scrolling
 set mouse=a
 
-" Highlight trailing whitespaces
-highlight ExtraWhitespace ctermbg=red guibg=#FF4060
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red
-autocmd InsertEnter * match ExtraWhiteSpace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhiteSpace /\s\+$/
+" nmap OO O<Esc>
+" nmap oo o<Esc>
+nmap <leader>cc :cclose<CR>
+nmap <leader>co :copen<CR>
+nmap <leader>lb :BLines 
+nmap <leader>ll :Lines 
 
-" Lightline
-set noshowmode
-let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
-      \ },
-      \ 'inactive': {
-      \   'left': [ [ 'relativepath' ],
-      \             [ ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ }
-      \ }
+runtime macros/matchit.vim
 
-" CPP
-autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
+" Makes vim-ariline fly!
+set laststatus=2
 
-" Makefiles should use tabulators
-autocmd FileType make setlocal shiftwidth=4 tabstop=4 noexpandtab
+" let g:airline_theme='base16_eighties'
+let g:airline_theme='random'
+let g:airline#extensions#tabline#enabled = 1
 
-" Map that hard to type key
+" clang-format
+let g:clang_format#style_options = {"Standard" : "C++11"}
+let g:clang_format#command = "clang-format-6.0"
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+autocmd FileType typescript nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType typescript vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+autocmd FileType javascript set shiftwidth=4
+
+" JS Beauuutify
+autocmd FileType javascript noremap <buffer> <Leader>cf :call JsBeautify()<cr>
+" for json
+autocmd FileType json noremap <buffer> <Leader>cf :call JsonBeautify()<cr>
+" for jsx
+autocmd FileType jsx noremap <buffer> <Leader>cf :call JsxBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <Leader>cf :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <Leader>cf :call CSSBeautify()<cr>
+
+autocmd FileType python noremap <buffer> <Leader>cf :call Autopep8()<cr>
+"
+" For gitgutter
+set updatetime=100
+
+nmap <F6> :TagbarToggle<CR>
+let g:tagbar_width = 40
+" javacomplete2
+" autocmd FileType java setlocal omnifunc=javacomplete#Complete
+" nmap <F7> <Plug>(JavaComplete-Imports-Add)
+" imap <F7> <Plug>(JavaComplete-Imports-Add)
+
+call camelcasemotion#CreateMotionMappings('<leader>')
+
+let g:UltiSnipsExpandTrigger="<c-g>"
+let g:UltiSnipsListSnippets="<a-g>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
+
+" Customize autopep8
+let g:autopep8_disable_show_diff=1
+let g:autopep8_ignore="E226,E24,W6,E402"
+
+set foldmethod=manual
+set nofoldenable
+
+" let javaScript_fold=1         " JavaScript
+let g:polyglot_disabled = ['pug']
+
+" For vim-unimpaired
 nmap ö [
 nmap ä ]
+inoremap <C-CR> <Esc>
+" inoremap jh <ESC>
+" imap ö [
+" imap ä ]
 omap ö [
 omap ä ]
 xmap ö [
 xmap ä ]
 
-" Navigation
-nmap . .`[
-nmap j gj
-nmap k gk
-nmap <c-j> :tjump 
-nmap <c-h> :call SwitchSourceHeader() <CR>
-nmap <F4> :e ~/.config/nvim/init.vim <CR>
-nmap <F12> :tjump <C-R><C-W> <CR>
-nmap <F12> :tjump <C-R><C-W> <CR>
-
-" Fzf.vim
-nnoremap <silent> <leader>f :Files <CR>
-nnoremap <silent> <leader>b :Buffers <CR>
-nnoremap <silent> <leader>j :GFiles <CR>
-nnoremap <silent> <leader>t :Tags <CR>
-
-" Quickfix/location
-nnoremap qo :copen<CR>
-nnoremap qc :cclose<CR>
-nnoremap Lo :lopen<CR>
-nnoremap Lc :lclose<CR>
-
-" Diagnostics
-nnoremap qn :NextDiagnosticCycle<CR>
-nnoremap qp :PrevDiagnosticCycle<CR>
-
-" override default f instead of s
-map f <Plug>Sneak_s
-map F <Plug>Sneak_S
-
-" Format file
-nnoremap <leader>cf :Neoformat<CR>
-vnoremap <leader>cf :Neoformat<CR>
-
-" Generate new ctags for project
-nmap <F8> :!ctags -R --c++-kinds=+p --fields=+ilaS --extras=+q+f .<CR>
-nmap <C-F8> :!ctags -R --language-force=java --extras=+f --exclude=*.class .<CR>
-
-" Change between indentation settings
-nmap <F9> :set tabstop=4<CR>:set shiftwidth=4<CR>:set expandtab<CR>:set cinoptions=<CR>
-nmap <F10> :set tabstop=2<CR>:set shiftwidth=2<CR>:set expandtab<CR>:set cinoptions=<CR>
-
-" Magically fold from search result
-nnoremap \z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
-
-"Added ! to overwrite on reload
-function! SwitchSourceHeader()
-    let extension = expand("%:e")
-    if extension ==? "cpp" || extension ==? "c"
-        let extension = ".h"
-    else
-        let extension = ".c"
-    endif
-    let file = expand("%:t:r").extension
-    if bufexists(bufname(file))
-        execute "buffer ".file
-    else
-        execute "tjump ".file
-    endif
-endfunction
-
-" Gitgutter
-set updatetime=100
-
-" Camelcase
-call camelcasemotion#CreateMotionMappings('<leader>')
-
-" Ultisnips
-" let g:UltiSnipsExpandTrigger="<c-g>"
-let g:UltiSnipsListSnippets="<a-g>"
-
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-y>"
-let g:UltiSnipsJumpBackwardTrigger="<c-t>"
-
-" Reset blinking mode when leaving
+" Handle resetting cursor blinking
 au VimLeave * set guicursor=a:block-blinkon1
 au VimSuspend * set guicursor=a:block-blinkon1
 au VimResume * set guicursor=a:block-blinkon0
 
-" Floating FZF
-let $FZF_DEFAULT_OPTS='--layout=reverse --margin=1,3'
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+noremap <expr> <leader>fg ':Ggrep '.expand('<cword>').'<cr>'
 
-" Use completion-nvim in every buffer
-autocmd BufEnter * lua require'completion'.on_attach()
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" For nvim-completion
-let g:completion_enable_auto_popup = 1
-let g:completion_auto_change_source = 1
-let g:completion_enable_snippet = 'UltiSnips'
+nmap <silent> [h <Plug>(coc-diagnostic-prev-error)
+nmap <silent> ]h <Plug>(coc-diagnostic-next-error)
 
-" Neovim LSP Diagnostics
-let g:diagnostic_enable_virtual_text = 1
-let g:diagnostic_show_sign = 1
-let g:diagnostic_auto_popup_while_jump = 1
-let g:diagnostic_insert_delay = 1
-" let g:diagnostic_virtual_text_prefix = ' '
+" Reset blinking mode when leaving
+if has('nvim')
+    let $FZF_DEFAULT_OPTS='--layout=reverse --margin=1,3'
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+    function! FloatingFZF()
+        let buf = nvim_create_buf(v:false, v:true)
+        call setbufvar(buf, '&signcolumn', 'no')
+        let height = float2nr(40)
+        let width = float2nr(140)
+        let horizontal = float2nr((&columns - width) / 2)
+        let vertical = 1
 
-" autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
-
-" Use neovim lsp ccls
-lua << EOF
-
-local nvim_lsp = require('nvim_lsp')
-
-local on_attach = function(_, bufnr)
-  require'completion'.on_attach()
-  require'diagnostic'.on_attach()
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
-
-local configs = require 'nvim_lsp/configs'
-local util = require 'nvim_lsp/util'
-
-local default_ccls = "/home/greven/.config/nvim/default_config/ccls/.ccls";
-configs.ccls = {
-  default_config = {
-    cmd = {"ccls"};
-    filetypes = {"c", "cpp", "objc", "objcpp"};
-    root_dir = util.root_pattern(".ccls", "compile_commands.json", "compile_flags.txt", ".git", default_ccls);
-  };
-}
-nvim_lsp.ccls.setup {
-    on_attach = on_attach,
-}
-nvim_lsp.pyls.setup { on_attach = on_attach }
-nvim_lsp.texlab.setup { on_attach = on_attach }
-nvim_lsp.jsonls.setup { on_attach = on_attach }
-nvim_lsp.html.setup { on_attach = on_attach }
-nvim_lsp.bashls.setup { on_attach = on_attach }
-
-local tsbin = "typescript-language-server";
-local ts_installer = util.npm_installer {
-  server_name = "tsserver";
-  packages = { tsbin };
-  binaries = { tsbin };
-}
-
-local default_tsc = "/home/greven/.config/nvim/default_config/tsserver/tsconfig.json";
-configs.tsserver = {
-  default_config = {
-    cmd = {ts_installer.info().binaries[tsbin], "--stdio"};
-    filetypes = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx"};
-    root_dir = util.root_pattern("package.json", "tsconfig.json", ".git", default_tsc);
-  };
-  settings = {};
-};
-nvim_lsp.tsserver.setup { on_attach = on_attach }
-nvim_lsp.vimls.setup { on_attach = on_attach }
-
-EOF
-
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <a-d> <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
-nnoremap <silent> gA    <cmd>lua vim.lsp.buf.codeaction()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gt    <cmd>lua vim.lsp.buf.symbols()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <a-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
+        let opts = {
+                    \ 'relative': 'editor',
+                    \ 'row': vertical,
+                    \ 'col': horizontal,
+                    \ 'width': width,
+                    \ 'height': height,
+                    \ 'style': 'minimal'
+                    \ }
+        call nvim_open_win(buf, v:true, opts)
+    endfunction
+endif
